@@ -58,6 +58,14 @@ type PaymentLinksList struct {
 	} `json:"_embedded,omitempty"`
 }
 
+type PaymentLinkPaymentsList struct {
+	Count    int              `json:"count,omitempty"`
+	Links    PaymentLinkLinks `json:"_links,omitempty"`
+	Embedded struct {
+		Payments []*Payment `json:"payments,omitempty"`
+	} `json:"_embedded,omitempty"`
+}
+
 // UpdatePaymentLinks describes certain details of an existing payment link
 // that can be updated.
 type UpdatePaymentLinks struct {
@@ -151,6 +159,19 @@ func (pls *PaymentLinksService) Update(ctx context.Context, id string, p UpdateP
 func (pls *PaymentLinksService) Delete(ctx context.Context, id string) (res *Response, err error) {
 	res, err = pls.client.delete(ctx, fmt.Sprintf("v2/payment-links/%s", id))
 	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (pls *PaymentLinksService) GetPayments(ctx context.Context, id string) (res *Response, pl *PaymentLinkPaymentsList, err error) {
+	res, err = pls.client.get(ctx, fmt.Sprintf("v2/payment-links/%s/payments", id), nil)
+	if err != nil {
+		return
+	}
+
+	if err = json.Unmarshal(res.content, &pl); err != nil {
 		return
 	}
 
