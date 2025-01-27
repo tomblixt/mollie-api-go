@@ -1,4 +1,4 @@
-module github.com/VictorAvelar/mollie-api-go/v4
+module github.com/tomblixt/mollie-api-go/v4
 
 go 1.20
 
