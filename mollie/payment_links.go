@@ -58,6 +58,8 @@ type PaymentLinksList struct {
 	} `json:"_embedded,omitempty"`
 }
 
+// PaymentLinkPaymentsList retrieves a list of payments for a specific
+// payment link.
 type PaymentLinkPaymentsList struct {
 	Count    int              `json:"count,omitempty"`
 	Links    PaymentLinkLinks `json:"_links,omitempty"`
@@ -165,6 +167,9 @@ func (pls *PaymentLinksService) Delete(ctx context.Context, id string) (res *Res
 	return
 }
 
+// Retrieve the list of payments for a specific payment link.
+//
+// See: https://docs.mollie.com/reference/get-payment-link-payments
 func (pls *PaymentLinksService) GetPayments(ctx context.Context, id string) (res *Response, pl *PaymentLinkPaymentsList, err error) {
 	res, err = pls.client.get(ctx, fmt.Sprintf("v2/payment-links/%s/payments", id), nil)
 	if err != nil {
